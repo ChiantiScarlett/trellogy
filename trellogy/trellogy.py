@@ -1,4 +1,5 @@
 from .components import List, Card
+from .error import InvalidAPIError, NoListFoundError
 
 
 class Trellogy:

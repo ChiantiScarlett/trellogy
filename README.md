@@ -36,8 +36,7 @@ class Card:
 
 
 ```python
-trellogy = Trellogy(board_id="BOARD_ID", trash_id="TRASH_BIN_ID")
-
+trellogy = Trellogy(board_id="BOARD_ID", trash_id="TRASH_BIN_ID")1
 # Create
 new_list = trellogy.create_list(title="TITLE")
 new_list.update()
