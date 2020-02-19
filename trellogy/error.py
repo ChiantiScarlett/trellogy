@@ -1,3 +1,11 @@
+class NotEnoughParamsError(Exception):
+    def __init__(self, key):
+        self._key = key
+
+    def __str__(self):
+        return "Value for the key `{}` was not given.".format(self._key)
+
+
 class InvalidAPIError(Exception):
     def __init__(self):
         pass
@@ -6,7 +14,7 @@ class InvalidAPIError(Exception):
         return "Invalid API KEY or API TOKEN."
 
 
-class NoCardFoundError(Exception):
+class InvalidBoardIDError(Exception):
     def __init__(self, board_id):
         self.board_id = board_id
 
@@ -14,7 +22,7 @@ class NoCardFoundError(Exception):
         return "No board was found by the id `{}`.".format(self.board_id)
 
 
-class NoListFoundError(Exception):
+class InvalidListIDError(Exception):
     def __init__(self, list_id):
         self.list_id = list_id
 
@@ -22,7 +30,7 @@ class NoListFoundError(Exception):
         return "No list was found by the id `{}`.".format(self.list_id)
 
 
-class NoCardFoundError(Exception):
+class InvalidCardIDError(Exception):
     def __init__(self, card_id):
         self.card_id = card_id
 
