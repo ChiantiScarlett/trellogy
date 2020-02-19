@@ -1,12 +1,55 @@
-class List:
-    def __init__(self, list_id):
-        self.id = list_id
+from .error import InvalidAPIError, InvalidListIDError, NotEnoughParamsError
+import requests
 
-    def to_json(self):
-        """
-        Convert data to JSON object:
-        """
-        pass
+
+class List:
+    def __init__(self, **kwargs):
+        try:
+            self._key = kwargs['key']
+            self._token = kwargs['token']
+            self._board_id = kwargs['board_id']
+            self._trash_id = kwargs['trash_id']
+            self._id = kwargs['list_id']
+            self._name = kwargs['name']
+        except KeyError as error:
+            raise NotEnoughParamsError(error.__str__())
+
+        self._cards = None
+
+    @property
+    def id(self):
+        return self._id
+
+    @property
+    def name(self):
+        return self._name
+
+    @property
+    def cards(self):
+        if self._cards is None:
+            self.read()
+
+        return self._cards
+
+    def read(self):
+        url = 'https://api.trello.com/1/lists/' + \
+            '{BOARD_ID}/cards?fields=all&key={KEY}&token={TOKEN}'.format(
+                BOARD_ID=self._board_id
+            )
+        response = requests.get(url.format(
+            BOARD_ID=self._id, KEY=self._key, TOKEN=self._token
+        ))
+        if response.status_code != 200:
+            raise InvalidListIDError
+
+        cards = response.json()
+        print(cards)
+
+    def __repr__(self):
+        return "<class 'trellogy.List'>"
+
+    def __str__(self):
+        return self._name
 
 
 class Card:
