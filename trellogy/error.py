@@ -1,3 +1,11 @@
+class TrellogyError(Exception):
+    def __init__(self, message):
+        self._message = message
+
+    def __str__(self):
+        return self._message
+
+
 class NotEnoughParamsError(Exception):
     def __init__(self, key):
         self._key = key
@@ -6,7 +14,7 @@ class NotEnoughParamsError(Exception):
         return "Value for the key `{}` was not given.".format(self._key)
 
 
-class InvalidAPIError(Exception):
+class InvalidKeyTokenError(Exception):
     def __init__(self):
         pass
 

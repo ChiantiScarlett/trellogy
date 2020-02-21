@@ -1,4 +1,4 @@
-from .error import InvalidAPIError, InvalidListIDError, NotEnoughParamsError
+from .error import InvalidKeyTokenError, InvalidListIDError, NotEnoughParamsError
 import requests
 
 
