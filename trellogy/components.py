@@ -1,4 +1,5 @@
-from .error import InvalidKeyTokenError, InvalidListIDError, NotEnoughParamsError
+from .error import (TrellogyError,
+                    NotEnoughParamsError, InvalidParamError)
 import requests
 
 
@@ -7,14 +8,33 @@ class List:
         try:
             self._key = kwargs['key']
             self._token = kwargs['token']
-            self._board_id = kwargs['board_id']
-            self._trash_id = kwargs['trash_id']
-            self._id = kwargs['list_id']
+            self._idTrash = kwargs['idTrash']
+            self._id = kwargs['id']
             self._name = kwargs['name']
+            self._closed = kwargs['closed']
+            self._idBoard = kwargs['idBoard']
+            self._pos = kwargs['pos']
+
         except KeyError as error:
             raise NotEnoughParamsError(error.__str__())
 
         self._cards = None
+
+    @property
+    def idTrash(self):
+        return self._idTrash
+
+    @property
+    def idBoard(self):
+        return self._idBoard
+
+    @property
+    def closed(self):
+        return self._closed
+
+    @property
+    def pos(self):
+        return self._pos
 
     @property
     def id(self):
@@ -31,6 +51,20 @@ class List:
 
         return self._cards
 
+    def delete(self):
+        self.update(idBoard=self._idTrash)
+
+    def archive(self):
+        url = 'https://api.trello.com/1/lists/' + \
+            '{LIST_ID}/closed?value=true&key={KEY}&token={TOKEN}'
+        response = requests.put(url.format(
+            LIST_ID=self._id,
+            KEY=self._key,
+            TOKEN=self._token
+        ))
+        if response.status_code != 200:
+            raise TrellogyError(response.text)
+
     def read(self):
         url = 'https://api.trello.com/1/lists/' + \
             '{LIST_ID}/cards?fields=all&key={KEY}&token={TOKEN}'
@@ -38,9 +72,28 @@ class List:
             LIST_ID=self._id, KEY=self._key, TOKEN=self._token
         ))
         if response.status_code != 200:
-            raise InvalidListIDError
+            raise TrellogyError(response.text)
 
         self._cards = response.json()
+
+    def update(self, **kwargs):
+        VALID_KEYS = ['name', 'closed', 'idBoard', 'pos', 'subscribed']
+        for key in kwargs.keys():
+            if key not in VALID_KEYS:
+                raise InvalidParamError(key)
+
+        url = 'https://api.trello.com/1/lists/' + \
+            '{LIST_ID}?key={KEY}&token={TOKEN}'.format(
+                LIST_ID=self._id, KEY=self._key, TOKEN=self._token
+            )
+
+        params = map(lambda key: "{}={}".format(
+            key, kwargs[key]), kwargs.keys())
+
+        response = requests.put("&".join([url]+list(params)))
+
+        if response.status_code != 200:
+            print(response)
 
     def __repr__(self):
         return "<class 'trellogy.List'>"
