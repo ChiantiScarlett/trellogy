@@ -33,17 +33,14 @@ class List:
 
     def read(self):
         url = 'https://api.trello.com/1/lists/' + \
-            '{BOARD_ID}/cards?fields=all&key={KEY}&token={TOKEN}'.format(
-                BOARD_ID=self._board_id
-            )
+            '{LIST_ID}/cards?fields=all&key={KEY}&token={TOKEN}'
         response = requests.get(url.format(
-            BOARD_ID=self._id, KEY=self._key, TOKEN=self._token
+            LIST_ID=self._id, KEY=self._key, TOKEN=self._token
         ))
         if response.status_code != 200:
             raise InvalidListIDError
 
-        cards = response.json()
-        print(cards)
+        self._cards = response.json()
 
     def __repr__(self):
         return "<class 'trellogy.List'>"
