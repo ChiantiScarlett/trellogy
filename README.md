@@ -1,18 +1,23 @@
 # Trellogy
 
+<br>
+
 <blockquote>Trello handling module via Trello REST API</blockquote>
+
+<br>
 
 Trellogy is a handy tool to communicate with [Trello](https://trello.com) board. It relies on the REST API provided by the Trello team, but this is not the official wrapper of Trello API.
 
 Trello cards, lists, and attachments are implemented as classes in this module. Every component inherits API metadata to its subclasses and make things much more convenient. This project is open-ended, and bug / issue reports are always appreciated.
 
 
+<br>
 
 ## Why I made it
 
 I made it for fun, frankly speaking. Most of my programs are invented from a escape of repeating tedious tasks over and over. Although there are a fancy tool called Butler,  it wasn't suitable for my picky needs of creating sophisticated cards and labels with extremely specific details. Hence, I quickly jotted down some codes that can act as a bottom-line material of other Trello-related projects.
 
-
+<br>
 
 ## Installation
 
@@ -30,6 +35,7 @@ Or perhaps on Linux:
 sudo pip3 install trellogy
 ```
 
+<br>
 
 
 ## Quick Example
@@ -52,6 +58,7 @@ for trello_list in trello.get_lists():
 ```
 
 
+<br>
 
 ## Code Explanation
 
@@ -61,7 +68,7 @@ for trello_list in trello.get_lists():
 from trellogy import Trellogy
 ```
 
-
+<br>
 
 ### Initialize Trellogy
 
@@ -113,11 +120,15 @@ for card in cards:
 For more detail, take a look at the [Trellogy Documentation](https://github.com/ChiantiScarlett/trellogy/blob/master/doc/README.md).
 
 
+<br>
+
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
+
+<br>
 
 
 ## Special thanks to
