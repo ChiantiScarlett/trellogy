@@ -1,49 +1,128 @@
 # Trellogy
 
-<blockquote>Trello handling module using Trello REST API</blockquote>
+<blockquote>Trello handling module via Trello REST API</blockquote>
 
-## Purpose
+Trellogy is a handy tool to communicate with [Trello](https://trello.com) board. It relies on the REST API provided by the Trello team, but this is not the official wrapper of Trello API.
 
-Trello is an amazing tool that has multiple features to handle complicated workflows and enrich my life. Trello initially popped up to me as a recommendation from my office colleagues. Trello successfully settled down in our office workflow, which maximizes the efficiency.
-After using it for a couple of months, I thought I could also make use of it in handling personal tasks as well. I was a big fan of Franklin Planner back in the old days, right until I migrated myself into the digital world. Believing Trello can be a perfect fit for this matter, I tested jotting down things on the Trello every day.
-It didn't take long to figure out that it is such a time-consuming job to create lists, rename them to future dates accordingly, and duplicate same cards over and over. Of course, I knew the core (and perhaps most handy) function called 'Butler' that can assist handling tedious task. But it wasn't a perfect solution that can cover all my sophisticated needs. Hence I came up of the idea of creating a simple Python module that wraps up the Trello REST API, and then write some codes that can fulfill automated jobs.
+Trello cards, lists, and attachments are implemented as classes in this module. Every component inherits API metadata to its subclasses and make things much more convenient. This project is open-ended, and bug / issue reports are always appreciated.
 
-## Quick Use
+
+
+## Why I made it
+
+I made it for fun, frankly speaking. Most of my programs are invented from a escape of repeating tedious tasks over and over. Although there are a fancy tool called Butler,  it wasn't suitable for my picky needs of creating sophisticated cards and labels with extremely specific details. Hence, I quickly jotted down some codes that can act as a bottom-line material of other Trello-related projects.
+
+
+
+## Installation
+
+You can install trellogy via PIP:
+
+Say what the step will be
+
+```
+pip install trellogy
+```
+
+Or perhaps on Linux:
+
+```
+sudo pip3 install trellogy
+```
+
+
+
+## Quick Example
+
+Here is a quick example to show what Trellogy looks like.
 
 ```python
 from trellogy import Trellogy
 
-# Initialize:
 trello = Trellogy(key=TRELLO_API_KEY,
                   token=TRELLO_API_TOKEN,
                   board_id=BOARD_ID,
                   trash_id=TRASH_BOARD_ID)
 
-# Get lists from the board:
-trello_lists = trello.get_lists() # list of <trello.List>
-
-# Get cards from a list:
-trello_cards = trello.cards # list of <trello.Card>
-
-# Get first card from the list:
-sample_card = trello_cards[0]
-
-# Title of the card:
-print(sample_card.name)
-
-# Description of the card:
-print(sample_card.desc)
+for trello_list in trello.get_lists():
+  cards = trello.cards
+  for card in cards:
+    print(card.name)
+    print(card.desc)
 ```
 
-## Quick Explanation
 
-### Mandatory: ACCESS_KEY, ACCESS_TOKEN, BOARD_ID
 
-Basically, in order to use this module, you need **ACCESS KEY**, **ACCESS TOKEN**, and **BOARD ID**. Key and token is necessary in order to control your board via API. You can get your key and token from [here](https://trello.com/app-key).
-Board ID is the id of the board that you are trying to manage. You can get your board ID by adding **.json** to your board_url. For example, if your board URL is **https://trello.com/b/RANDOM_ID/SAMPLE_NAME**, go to **https://trello.com/b/RANDOM_ID/SAMPLE_NAME.json** and you'll see your board ID on the first line of the JSON data.
+## Code Explanation
 
-### Optional: TRASH_BOARD_ID
+### Import Trellogy
 
-Also, you can give **TRASH BOARD ID** as a parameter. Since the Trello does not let us directly remove data from the board via API, a way to detour this is to create a board and move all the unnecessasry lists or cards to it, as if you are tossing junk files to a trash bin.
+```
+from trellogy import Trellogy
+```
 
-If you do not set trash_id when initializing Trellogy class, you may have restrctions using a couple of methods e.g. delete_list(), delete_card().
+
+
+### Initialize Trellogy
+
+
+```python
+trello = Trellogy(key=TRELLO_API_KEY,
+                  token=TRELLO_API_TOKEN,
+                  board_id=BOARD_ID,
+                  trash_id=TRASH_BOARD_ID)
+```
+
+In order to initialize, Trello receives 3 mandatory arguments and 1 optional argument. The descriptions are as follows:
+
+#### mandatory: key, token, board_id
+
+In order to use the Trello REST API, you need to get a `key` and a `token`. You can grab yours from [here](https://trello.com/app-key). `board_id` is the ID of the board you want to manage. One way to figure out your ID of the board is to put **.json** at the end of the URL. For example, suppose your board URL is https://trello.com/b/SAMPLE/BOARD. You jump to https://trello.com/b/SAMPLE/BOARD.json, and will see your board ID at the top of the textlines.
+
+
+#### optional: trash_id
+
+Unfortunately, there is no way you can get rid of a card or a list via API directly - you can only archive it. So as a workaround, you can create a junk board and toast all the nasty stuff into it - *just like how you use the trash bin in your laptop*. `trash_id` is the ID of the junk board. You may leave it empty if you wouldn't need the workaround.
+
+
+
+### Trellogy.List
+
+```python
+trello_lists = trello.get_lists()
+for trello_list in trello_lists:
+  cards = trello_list.cards
+```
+
+`get_lists()` method will return a list of **&lt;Trellogy.List&gt;**. Each class own various methods and property including `cards`, a list of **&lt;Trellogy.Card&gt;** classes.
+
+
+
+### Trellogy.Card
+
+```python
+for card in cards:
+  print(card.name)
+  print(card.desc)
+```
+
+**&lt;Trellogy.Card&gt;** class is the implementation of Trello card. It contains read-only properties including name, desc, etc. Please note that updating each property is possible only by using `update(**kwargs)` method.
+
+
+
+For more detail, take a look at the [Trellogy Documentation](https://github.com/ChiantiScarlett/trellogy/blob/master/doc/README.md).
+
+---
+
+
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+
+
+
+## Special thanks to
+
+- My coffee cup
+- Various artists who uploaded their music on the Youtube
