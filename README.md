@@ -49,10 +49,10 @@ trello = Trellogy(key=TRELLO_API_KEY,
                   trash_id=TRASH_BOARD_ID)
 
 for trello_list in trello.get_lists():
-  cards = trello.cards
-  for card in cards:
-    print(card.name)
-    print(card.desc)
+    cards = trello.cards
+    for card in cards:
+        print(card.name)
+        print(card.desc)
 ```
 
 
@@ -90,7 +90,7 @@ In order to use the Trello REST API, you need to get a `key` and a `token`. You 
 
 #### optional: trash_id
 
-Unfortunately, there is no way you can get rid of a card or a list via API directly - you can only archive it. So as a workaround, you can create a junk board and toast all the nasty stuff into it - *just like how you use the trash bin in your laptop*. `trash_id` is the ID of the junk board. You may leave it empty if you wouldn't need the workaround.
+Unfortunately, there is no way you can get rid of a card or a list via API directly - you can only archive it. So as a workaround, you can create a junk board and toast all the nasty stuff into it - *just like how you use the trash bin inside your laptop*. `trash_id` is the board ID of that junk board. You may leave it empty if you don't need the workaround.
 
 <br>
 
@@ -99,10 +99,10 @@ Unfortunately, there is no way you can get rid of a card or a list via API direc
 ```python
 trello_lists = trello.get_lists()
 for trello_list in trello_lists:
-  cards = trello_list.cards
+    cards = trello_list.cards
 ```
 
-`get_lists()` method will return a list of **&lt;Trellogy.List&gt;**. Each class own various methods and property including `cards`, a list of **&lt;Trellogy.Card&gt;** classes.
+`get_lists()` method will return a list of **&lt;Trellogy.List&gt;**. Each class own various methods and properties including `cards`, a list of **&lt;Trellogy.Card&gt;** classes.
 
 <br>
 
@@ -110,8 +110,8 @@ for trello_list in trello_lists:
 
 ```python
 for card in cards:
-  print(card.name)
-  print(card.desc)
+    print(card.name)
+    print(card.desc)
 ```
 
 **&lt;Trellogy.Card&gt;** class is the implementation of Trello card. It contains read-only properties including name, desc, etc. Please note that updating each property is possible only by using `update(**kwargs)` method.
@@ -123,15 +123,14 @@ For more detail, take a look at the [Trellogy Documentation](https://github.com/
 <br>
 
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-
-<br>
-
-
 ## Special thanks to
 
 - My coffee cup
 - Various artists who uploaded their music on the Youtube
+
+<br>
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+
