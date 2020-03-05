@@ -126,11 +126,4 @@ For more detail, take a look at the [Trellogy Documentation](https://github.com/
 ## Special thanks to
 
 - My coffee cup
-- Various artists who uploaded their music on the Youtube
-
-<br>
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
+- Various musicians that I seek on Youtube every day
