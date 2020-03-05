@@ -112,8 +112,6 @@ for card in cards:
 
 For more detail, take a look at the [Trellogy Documentation](https://github.com/ChiantiScarlett/trellogy/blob/master/doc/README.md).
 
----
-
 
 
 ## License
