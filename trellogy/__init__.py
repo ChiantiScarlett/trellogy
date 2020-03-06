@@ -4,4 +4,5 @@ Project Trellogy
 Author: Chianti Scarlett
 """
 
-from .trellogy import Trellogy
+from .board import Board
+from .list import List

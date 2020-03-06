@@ -4,52 +4,29 @@ from urllib.request import unquote
 import requests
 
 
-class Component:
-    def __init__(self, **kwargs):
-        if 'key' not in kwargs.keys():
-            raise NotEnoughParamsError('key')
-        if 'token' not in kwargs.keys():
-            raise NotEnoughParamsError('token')
-        if 'id' not in kwargs.keys():
-            raise NotEnoughParamsError('id')
-        self._key = kwargs['key']
-        self._token = kwargs['token']
-        self._id = kwargs['id']
-
-
 class TrashBoard:
     def __init__(self, **kwargs):
         pass
 
 
-class Board(Component):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+# class Card(Component):
+#     def __init__(self, **kwargs):
+#         pass
 
 
-class List(Component):
-    def __init__(self, **kwargs):
-        pass
+# class Label(Component):
+#     def __init__(self, **kwargs):
+#         pass
 
 
-class Card(Component):
-    def __init__(self, **kwargs):
-        pass
+# class Attachment(Component):
+#     def __init__(self, **kwargs):
+#         pass
 
 
-class Label(Component):
-    def __init__(self, **kwargs):
-        pass
-
-
-class Attachment(Component):
-    def __init__(self, **kwargs):
-        pass
-
-
-class Checkbox(Component):
-    def __init__(self, **kwargs):
-        pass
+# class Checkbox(Component):
+#     def __init__(self, **kwargs):
+#         pass
 
 
 # class Attachment:
