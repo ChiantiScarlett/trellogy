@@ -49,7 +49,7 @@ trello = Trellogy(key=TRELLO_API_KEY,
                   trash_id=TRASH_BOARD_ID)
 
 for trello_list in trello.get_lists():
-    cards = trello.cards
+    cards = trello_list.cards
     for card in cards:
         print(card.name)
         print(card.desc)
@@ -99,7 +99,7 @@ Unfortunately, there is no way you can get rid of a card or a list via API direc
 ```python
 trello_lists = trello.get_lists()
 for trello_list in trello_lists:
-    cards = trello_list.cards
+    cards = trello_list_list.cards
 ```
 
 `get_lists()` method will return a list of **&lt;Trellogy.List&gt;**. Each class own various methods and properties including `cards`, a list of **&lt;Trellogy.Card&gt;** classes.
