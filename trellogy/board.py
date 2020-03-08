@@ -26,7 +26,7 @@ class Board(Component):
         if name is None:
             raise NotEnoughParamsError('name')
         if color is None:
-            raise NotEnoughParamsError('name')
+            raise NotEnoughParamsError('color')
 
         colors = ['yellow', 'purple', 'blue', 'red', 'green', 'orange',
                   'black', 'sky', 'pink', 'lime', 'null']
