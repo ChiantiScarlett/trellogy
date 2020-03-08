@@ -1,6 +1,7 @@
 from .error import TrellogyError, NotEnoughParamsError
 from .component import Component
 from .label import Label
+from .list import List
 
 
 class Board(Component):
@@ -44,3 +45,13 @@ class Board(Component):
                      board_id=response['idBoard'],
                      name=response['name'],
                      color=response['color'])
+
+    def create_list(self, name, position='bottom'):
+        if name is None:
+            raise NotEnoughParamsError('name')
+
+        response = self.req('POST', '/boards/{}/lists'.format(self._id),
+                            name=name, pos=position)
+
+        return List(key=self._key, token=self._token, id=response['id'],
+                    position=response['pos'], closed=response['closed'])
