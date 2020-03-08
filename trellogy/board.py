@@ -1,4 +1,4 @@
-from .error import TrellogyError
+from .error import TrellogyError, NotEnoughParamsError
 from .component import Component
 from .label import Label
 
@@ -11,7 +11,7 @@ class Board(Component):
     @property
     def labels(self):
         path = '/boards/{BOARD_ID}/labels'.format(BOARD_ID=self._id)
-        response = self.req(path)
+        response = self.req('GET', path)
         labels = []
         for label in response:
             labels.append(Label(key=self._key,
@@ -21,3 +21,26 @@ class Board(Component):
                                 name=label['name'],
                                 color=label['color']))
         return labels
+
+    def create_label(self, name=None, color=None):
+        if name is None:
+            raise NotEnoughParamsError('name')
+        if color is None:
+            raise NotEnoughParamsError('name')
+
+        colors = ['yellow', 'purple', 'blue', 'red', 'green', 'orange',
+                  'black', 'sky', 'pink', 'lime', 'null']
+        if color.lower() not in colors:
+            raise TrellogyError('`color` should be one of the followings: ' +
+                                '[yellow, purple, blue, red, green, ' +
+                                'orange, black, sky, pink, lime, null].')
+
+        response = self.req('POST', '/labels',
+                            name=name, color=color.lower(), idBoard=self._id)
+
+        return Label(key=self._key,
+                     token=self._token,
+                     id=response['id'],
+                     board_id=response['idBoard'],
+                     name=response['name'],
+                     color=response['color'])
