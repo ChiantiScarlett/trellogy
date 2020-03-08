@@ -9,20 +9,6 @@ class Board(Component):
         _attributes = []
         super().__init__(**kwargs, _attributes=_attributes)
 
-    @property
-    def labels(self):
-        path = '/boards/{BOARD_ID}/labels'.format(BOARD_ID=self._id)
-        response = self.req('GET', path)
-        labels = []
-        for label in response:
-            labels.append(Label(key=self._key,
-                                token=self._token,
-                                id=label['id'],
-                                board_id=label['idBoard'],
-                                name=label['name'],
-                                color=label['color']))
-        return labels
-
     def create_label(self, name=None, color=None):
         if name is None:
             raise NotEnoughParamsError('name')
@@ -55,3 +41,32 @@ class Board(Component):
 
         return List(key=self._key, token=self._token, id=response['id'],
                     position=response['pos'], closed=response['closed'])
+
+    @property
+    def labels(self):
+        path = '/boards/{BOARD_ID}/labels'.format(BOARD_ID=self._id)
+        response = self.req('GET', path)
+        labels = []
+        for label in response:
+            labels.append(Label(key=self._key,
+                                token=self._token,
+                                id=label['id'],
+                                board_id=label['idBoard'],
+                                name=label['name'],
+                                color=label['color']))
+        return labels
+
+    @property
+    def lists(self):
+        path = '/boards/{BOARD_ID}/lists'.format(BOARD_ID=self._id)
+        response = self.req('GET', path)
+        t_lists = []
+        for t_list in response:
+            t_lists.append(List(key=self._key,
+                                token=self._token,
+                                id=t_list['id'],
+                                board_id=t_list['idBoard'],
+                                name=t_list['name'],
+                                position=t_list['pos'],
+                                closed=t_list['closed']))
+        return t_lists
