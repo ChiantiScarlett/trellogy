@@ -25,8 +25,13 @@ class Component:
         for key in kwargs:
             setattr(self, '_' + key, kwargs[key])
 
-    def req(self, path, **kwargs):
+    def req(self, method, path, **kwargs):
         base = 'https://api.trello.com/1'
+
+        methods = {'POST': requests.post, 'GET': requests.get,
+                   'PUT': requests.put, 'DELETE': requests.delete}
+        if method.upper() not in methods.keys():
+            raise TrellogyError('Invalid method `{}`.'.format(method))
 
         # Create query string:
         query = ['key={}'.format(self._key), 'token={}'.format(self._token)]
@@ -35,7 +40,7 @@ class Component:
         query = "?"+"&".join(query)
 
         # Send request and validate it, and return JSON:
-        response = requests.get(base+path+query)
+        response = methods[method](base+path+query)
         if response.status_code != 200:
             raise TrellogyError(response.text)
         return response.json()
