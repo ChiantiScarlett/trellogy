@@ -1,8 +1,12 @@
-from .error import NotEnoughParamsError
+from .error import NotEnoughParamsError, TrellogyError, ReadOnlyError
+import requests
 
 
 class Component:
     def __init__(self, **kwargs):
+        self._attr = kwargs['_attributes']
+
+        # Verify key, token, id and set these attributes:
         if 'key' not in kwargs.keys():
             raise NotEnoughParamsError('key')
         if 'token' not in kwargs.keys():
@@ -13,9 +17,42 @@ class Component:
         self._token = kwargs['token']
         self._id = kwargs['id']
 
-    def initialize_attributes(self, attributes, kwargs):
-        for attribute in attributes:
-            setattr(self, attribute, None)
+        # Add empty attributes starting with '-':
+        for attribute in kwargs['_attributes']:
+            setattr(self, '_' + attribute, None)
 
+        # Set attributes that are given:
         for key in kwargs:
-            setattr(self, key, kwargs[key])
+            setattr(self, '_' + key, kwargs[key])
+
+    def req(self, path, **kwargs):
+        base = 'https://api.trello.com/1'
+
+        # Create query string:
+        query = ['key={}'.format(self._key), 'token={}'.format(self._token)]
+        for key in kwargs:
+            query.append('{}={}'.format(key, kwargs[key]))
+        query = "?"+"&".join(query)
+
+        # Send request and validate it, and return JSON:
+        response = requests.get(base+path+query)
+        if response.status_code != 200:
+            raise TrellogyError(response.text)
+        return response.json()
+
+    def __getattr__(self, name):
+        # Redirect underscored attributes to non-underscored attributes:
+        return getattr(self, '_'+name) if name in self._attr \
+            else getattr(self, name)
+
+    def __setattr__(self, name, value):
+        # Bypass self._attr
+        if name == '_attr':
+            return super().__setattr__(name, value)
+
+        # Raise error when attributes are overrided by user explictly:
+        if name in self._attr:
+            raise ReadOnlyError(name)
+
+        # Otherwise, set attribute to the class:
+        super().__setattr__(name, value)
