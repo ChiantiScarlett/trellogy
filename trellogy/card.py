@@ -2,6 +2,7 @@ from urllib.request import quote
 from .error import TrellogyError, NotEnoughParamsError
 from .component import Component
 from .attachment import Attachment
+import requests
 
 
 class Card(Component):
@@ -28,6 +29,27 @@ class Card(Component):
 
     def unarchive(self):
         self.update(closed=False)
+
+    def add_attachment(self, filepath):
+        params = (
+            ('key', self._key),
+            ('token', self._token),
+        )
+
+        files = {
+            'file': (filepath, open(filepath, 'rb')),
+        }
+
+        response = requests.post(
+            'https://api.trello.com/1/cards/{}/attachments'.format(self._id),
+            params=params, files=files)
+
+        return Attachment(key=self._key, token=self._token,
+                          card_id=self._id,
+                          id=response.data['id'],
+                          size=response.data['bytes'],
+                          name=response.data['name'],
+                          url=response.data['url'])
 
     @property
     def attachments(self):
