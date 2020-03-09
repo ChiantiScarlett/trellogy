@@ -42,6 +42,16 @@ class Board(Component):
         return List(key=self._key, token=self._token, id=response['id'],
                     position=response['pos'], closed=response['closed'])
 
+    def update(self, name=None):
+        name = self._name if name is None else name
+        self.req('PUT', '/boards/{}'.format(self._id), name=name)
+
+    @property
+    def name(self):
+        path = '/boards/{BOARD_ID}/name'.format(BOARD_ID=self._id)
+        response = self.req('GET', path)
+        return response['_value']
+
     @property
     def labels(self):
         path = '/boards/{BOARD_ID}/labels'.format(BOARD_ID=self._id)
