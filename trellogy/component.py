@@ -48,8 +48,10 @@ class Component:
 
     def __getattr__(self, name):
         # Redirect underscored attributes to non-underscored attributes:
-        return getattr(self, '_'+name) if name in self._attr \
-            else getattr(self, name)
+
+        if name in self._attr:
+            return getattr(self, '_'+name)
+        return super().__getattribute__(name)
 
     def __setattr__(self, name, value):
         # Bypass self._attr
