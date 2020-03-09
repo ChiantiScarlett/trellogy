@@ -23,7 +23,7 @@ class List(Component):
 
         self.req('PUT', '/lists/{}'.format(self._id),
                  name=name, closed=self.bool_to_str[closed],
-                 board_id=board_id, position=position)
+                 idBoard=board_id, pos=position)
 
     def delete(self):
         self.req('DELETE', '/labels/{}'.format(self._id))
