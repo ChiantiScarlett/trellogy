@@ -5,6 +5,7 @@ import requests
 class Component:
     def __init__(self, **kwargs):
         self._attr = kwargs['_attributes']
+        self.bool_to_str = {True: 'true', False: 'false'}
 
         # Verify key, token, id and set these attributes:
         if 'key' not in kwargs.keys():
