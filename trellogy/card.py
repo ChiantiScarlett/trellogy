@@ -22,12 +22,11 @@ class Card(Component):
                  name=name, closed=self.bool_to_str[closed],
                  desc=quote(desc), idLabels=labels_id, idBoard=board_id)
 
-    @property
-    def cards(self):
-        if self._cards is None:
-            self.read()
+    def archive(self):
+        self.update(closed=True)
 
-        return self._cards
+    def unarchive(self):
+        self.update(closed=False)
 
     def read(self):
         path = '/lists/{LIST_ID}/cards'.format(LIST_ID=self._id)

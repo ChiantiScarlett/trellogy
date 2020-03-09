@@ -25,8 +25,11 @@ class List(Component):
                  name=name, closed=self.bool_to_str[closed],
                  idBoard=board_id, pos=position)
 
-    def delete(self):
-        self.req('DELETE', '/labels/{}'.format(self._id))
+    def archive(self):
+        self.update(closed=True)
+
+    def unarchive(self):
+        self.update(closed=False)
 
     @property
     def cards(self):
