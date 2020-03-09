@@ -5,4 +5,4 @@ Author: Chianti Scarlett
 """
 
 from .board import Board
-from .list import List
+from .trash_bin import TrashBin
