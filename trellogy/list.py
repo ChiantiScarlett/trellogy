@@ -1,5 +1,7 @@
 from .error import TrellogyError, NotEnoughParamsError
 from .component import Component
+from .card import Card
+from .label import Label
 
 
 class List(Component):
@@ -15,14 +17,41 @@ class List(Component):
                 'name, closed, board_id, position')
 
         name = self._name if not name else name
-        closed = {True: 'true', False: 'false'}[
-            self._closed] if not closed else closed
+        closed = self._closed if not closed else closed
         board_id = self._board_id if not board_id else board_id
         position = self._position if not position else position
 
         self.req('PUT', '/lists/{}'.format(self._id),
-                 name=name, closed=closed,
+                 name=name, closed=self.bool_to_str[closed],
                  board_id=board_id, position=position)
 
     def delete(self):
         self.req('DELETE', '/labels/{}'.format(self._id))
+
+    @property
+    def cards(self):
+        path = '/lists/{LIST_ID}/cards'.format(LIST_ID=self._id)
+        response = self.req('GET', path, fields='all')
+
+        cards = []
+        for card in response:
+            labels = []
+            for label in card['labels']:
+                labels.append(Label(key=self._key,
+                                    token=self._token,
+                                    board_id=self._board_id,
+                                    id=label['id'],
+                                    color=label['color'],
+                                    name=label['name']
+                                    ))
+
+            cards.append(Card(key=self._key, token=self._token,
+                              board_id=self._board_id,
+                              list_id=self._id,
+                              id=card['id'],
+                              closed=card['closed'],
+                              name=card['name'],
+                              desc=card['desc'],
+                              labels=labels
+                              ))
+        return cards
