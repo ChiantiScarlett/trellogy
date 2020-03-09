@@ -1,6 +1,7 @@
 from urllib.request import quote
 from .error import TrellogyError, NotEnoughParamsError
 from .component import Component
+from .attachment import Attachment
 
 
 class Card(Component):
@@ -28,8 +29,17 @@ class Card(Component):
     def unarchive(self):
         self.update(closed=False)
 
-    def read(self):
-        path = '/lists/{LIST_ID}/cards'.format(LIST_ID=self._id)
-        response = self.req('GET', path, fields='all')
+    @property
+    def attachments(self):
+        path = '/cards/{CARD_ID}/attachments'.format(CARD_ID=self._id)
+        response = self.req('GET', path)
 
-        print(response)
+        attachments = []
+        for attachment in response:
+            attachments.append(Attachment(key=self._key, token=self._token,
+                                          card_id=self._id,
+                                          id=attachment['id'],
+                                          size=attachment['bytes'],
+                                          name=attachment['name'],
+                                          url=attachment['url']))
+        return attachments
