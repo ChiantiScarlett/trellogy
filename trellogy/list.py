@@ -9,6 +9,23 @@ class List(Component):
         _attributes = ['id', 'board_id', 'name', 'closed', 'position']
         super().__init__(**kwargs, _attributes=_attributes)
 
+    def create_card(self, name, position='bottom'):
+        if name is None:
+            raise NotEnoughParamsError('name')
+
+        response = self.req('POST', '/lists/{}/cards'.format(self._id),
+                            name=name, pos=position)
+
+        return Card(key=self._key, token=self._token,
+                    board_id=self._board_id,
+                    list_id=self._id,
+                    id=response['id'],
+                    closed=response['closed'],
+                    name=response['name'],
+                    desc=response['desc'],
+                    labels=[]
+                    )
+
     def update(self, name=None, closed=None, board_id=None, position=None):
         if name is None and closed is None and \
                 board_id is None and position is None:
