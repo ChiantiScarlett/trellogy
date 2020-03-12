@@ -6,10 +6,68 @@ from .label import Label
 
 class List(Component):
     def __init__(self, **kwargs):
+        """
+        [Description]:
+            Implementation of <Trello List>
+        [Params]:
+            -------------------------------------------------------------------
+            PARAMETER  | TYPE   | DESCRIPTION
+            -------------------------------------------------------------------
+            key        | <str>  | API key
+            token      | <str>  | API token
+            id         | <str>  | Board ID
+            name       | <str>  | Name of this list
+            closed     | <bool> | Whether this list is closed or not.
+            position   | <int>  | Position of this list
+            -------------------------------------------------------------------
+
+        [Available Methods]:
+            -------------------------------------------------------------------
+            METHOD         | DESCRIPTION
+            -------------------------------------------------------------------
+            create_card    | Create a Trello Card that belongs to this list.
+            update         | Update this list.
+            archive        | Archive this list.
+            unarchive      | Unarchive this list.
+            -------------------------------------------------------------------
+
+        [Available Properties]:
+            -------------------------------------------------------------------
+            PROPERTY       | DESCRIPTION
+            -------------------------------------------------------------------
+            key            | API key
+            token          | API token
+            id             | ID of this list
+            board_id       | ID of the parent board
+            name           | Name of this list
+            closed         | Whether the board is archived
+            position       | Position of this list
+            cards          | A list of Trello Cards available on this list.
+            -------------------------------------------------------------------            
+        """
         _attributes = ['id', 'board_id', 'name', 'closed', 'position']
         super().__init__(**kwargs, _attributes=_attributes)
 
     def create_card(self, name, position='bottom'):
+        """
+        [Description]:
+            Create a Trello Card.
+
+        [Params]:
+            -------------------------------------------------------------------
+            PARAMETER  | TYPE  | DESCRIPTION
+            -------------------------------------------------------------------
+            name       | <str> | Name of the card
+            position   | <str> | Position of the card
+            -------------------------------------------------------------------
+
+        [Note]:
+            Parameter `position` should be one of the followings:
+            'bottom', 'top', or floating number.
+
+        [Returns]:
+            <Trellogy.Card> of the new Trello List.
+        """
         if name is None:
             raise NotEnoughParamsError('name')
 
@@ -27,6 +85,23 @@ class List(Component):
                     )
 
     def update(self, name=None, closed=None, board_id=None, position=None):
+        """
+        [Description]:
+            Update attributes of this list.
+
+        [Params]:
+            -------------------------------------------------------------------
+            PARAMETER  | TYPE  | DESCRIPTION
+            -------------------------------------------------------------------
+            name       | <str> | New name of the list
+            closed     | <str> | Whether to archive or unarchive this list
+            board_id   | <str> | ID of the parent board
+            position   | <str> | New position of the list
+            -------------------------------------------------------------------
+
+        [Returns]:
+            None
+        """
         if name is None and closed is None and \
                 board_id is None and position is None:
             raise TrellogyError(
@@ -43,13 +118,38 @@ class List(Component):
                  idBoard=board_id, pos=position)
 
     def archive(self):
+        """
+        [Description]:
+            Archive this list.
+
+        [Params]:
+            None
+
+        [Returns]:
+            None
+        """
+
         self.update(closed=True)
 
     def unarchive(self):
+        """
+        [Description]:
+            Archive this list.
+
+        [Params]:
+            None
+
+        [Returns]:
+            None
+        """
+
         self.update(closed=False)
 
     @property
     def cards(self):
+        """
+        [Description]: A list of Trello Cards available on this list.
+        """
         path = '/lists/{LIST_ID}/cards'.format(LIST_ID=self._id)
         response = self.req('GET', path, fields='all')
 

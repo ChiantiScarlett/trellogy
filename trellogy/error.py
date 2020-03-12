@@ -1,3 +1,8 @@
+"""
+[List of Possible Errors]
+"""
+
+
 class InvalidParamError(Exception):
     def __init__(self, param):
         self._param = param
