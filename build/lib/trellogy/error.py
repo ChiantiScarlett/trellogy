@@ -1,3 +1,8 @@
+"""
+[List of Possible Errors]
+"""
+
+
 class InvalidParamError(Exception):
     def __init__(self, param):
         self._param = param
@@ -20,3 +25,11 @@ class NotEnoughParamsError(Exception):
 
     def __str__(self):
         return "Value for the key `{}` was not given.".format(self._key)
+
+
+class ReadOnlyError(Exception):
+    def __init__(self, param):
+        self._param = param
+
+    def __str__(self):
+        return '`{}` is read-only property.'.format(self._param)
