@@ -26,6 +26,7 @@ class List(Component):
             METHOD         | DESCRIPTION
             -------------------------------------------------------------------
             create_card    | Create a Trello Card that belongs to this list.
+            get_cards      | Get a list of Trello Cards.
             update         | Update this list.
             archive        | Archive this list.
             unarchive      | Unarchive this list.
@@ -42,7 +43,6 @@ class List(Component):
             name           | Name of this list
             closed         | Whether the board is archived
             position       | Position of this list
-            cards          | A list of Trello Cards available on this list.
             -------------------------------------------------------------------            
         """
         _attributes = ['id', 'board_id', 'name', 'closed', 'position']
@@ -145,10 +145,16 @@ class List(Component):
 
         self.update(closed=False)
 
-    @property
-    def cards(self):
+    def get_cards(self):
         """
-        [Description]: A list of Trello Cards available on this list.
+        [Description]:
+            Get Trello Cards that belong to this list.
+
+        [Params]:
+            None
+
+        [Returns]:
+            A list of <Trellogy.Card>
         """
         path = '/lists/{LIST_ID}/cards'.format(LIST_ID=self._id)
         response = self.req('GET', path, fields='all')

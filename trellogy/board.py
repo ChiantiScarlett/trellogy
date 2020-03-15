@@ -21,11 +21,15 @@ class Board(Component):
 
         [Available Methods]:
             -------------------------------------------------------------------
-            METHOD         | DESCRIPTION
+            METHOD             | DESCRIPTION
             -------------------------------------------------------------------
-            create_label   | Create a Trello Label.
-            create_list    | Create a Trello List.
-            update         | Update attributes of this board.
+            create_label       | Create a Trello Label.
+            create_list        | Create a Trello List.
+            get_labels         | Get Trello Labels that belong to this board.
+            get_lists          | Get Trello Lists that belong to this board.
+            get_archived_cards | Get archived Trello Cards.
+            get_archived_lists | Get archived Trello Lists.
+            update             | Update attributes of this board.
             -------------------------------------------------------------------
 
         [Available Properties]:
@@ -36,10 +40,6 @@ class Board(Component):
             token          | API token
             id             | ID of this board
             name           | Name of this board.
-            labels         | A list of Trello Lists available on this board.
-            lists          | A list of Trello Labels available on this board.
-            archived_cards | A list of archived Trello Cards on this board.
-            archived_lists | A list of archived Trello Lists on this board.
             -------------------------------------------------------------------            
         """
         _attributes = []
@@ -143,10 +143,16 @@ class Board(Component):
         response = self.req('GET', path)
         return response['_value']
 
-    @property
-    def labels(self):
+    def get_labels(self):
         """
-        [Description]: A list of Trello Labels available on this board.
+        [Description]:
+            Get Trello Labels that belong to this board.
+
+        [Params]:
+            None
+
+        [Returns]:
+            A list of <Trellogy.Label>
         """
         path = '/boards/{BOARD_ID}/labels'.format(BOARD_ID=self._id)
         response = self.req('GET', path)
@@ -160,10 +166,16 @@ class Board(Component):
                                 color=label['color']))
         return labels
 
-    @property
-    def lists(self):
+    def get_lists(self):
         """
-        [Description]: A list of Trello Lists available on this board.
+        [Description]:
+            Get Trello Lists that belong to this board.
+
+        [Params]:
+            None
+
+        [Returns]:
+            A list of <Trellogy.List>
         """
         path = '/boards/{BOARD_ID}/lists'.format(BOARD_ID=self._id)
         response = self.req('GET', path)
@@ -178,10 +190,16 @@ class Board(Component):
                                 closed=t_list['closed']))
         return t_lists
 
-    @property
-    def archived_cards(self):
+    def get_archived_cards(self):
         """
-        [Description]: A list of archived Trello Cards on this board.
+        [Description]:
+            Get archived Trello Cards that belong to this board.
+
+        [Params]:
+            None
+
+        [Returns]:
+            A list of <Trellogy.Card>
         """
         path = '/boards/{BOARD_ID}/cards'.format(BOARD_ID=self._id)
         response = self.req('GET', path, fields='all', filter='closed')
@@ -209,10 +227,16 @@ class Board(Component):
                               ))
         return cards
 
-    @property
-    def archived_lists(self):
+    def get_archived_lists(self):
         """
-        [Description]: A list of archived Trello Lists on this board.
+        [Description]:
+            Get archived Trello Lists that belong to this board.
+
+        [Params]:
+            None
+
+        [Returns]:
+            A list of <Trellogy.List>
         """
         path = '/boards/{BOARD_ID}/lists'.format(BOARD_ID=self._id)
         response = self.req('GET', path, filter='closed')

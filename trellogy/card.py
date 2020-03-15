@@ -24,12 +24,13 @@ class Card(Component):
 
         [Available Methods]:
             -------------------------------------------------------------------
-            METHOD         | DESCRIPTION
+            METHOD          | DESCRIPTION
             -------------------------------------------------------------------
-            add_attachment | Add a Trello Attachment to this card. 
-            update         | Update this card.
-            archive        | Archive this card.
-            unarchive      | Unarchive this card.
+            add_attachment  | Add a Trello Attachment to this card. 
+            get_attachments | Get a list of Trello Cards.
+            update          | Update this card.
+            archive         | Archive this card.
+            unarchive       | Unarchive this card.
             -------------------------------------------------------------------
 
         [Available Properties]:
@@ -44,7 +45,6 @@ class Card(Component):
             desc           | Description of this card
             closed         | Whether the card is archived
             labels         | Position of this card
-            attachments    | A list of Trello Attachment available on this list
             -------------------------------------------------------------------            
         """
 
@@ -144,10 +144,16 @@ class Card(Component):
                           name=response.data['name'],
                           url=response.data['url'])
 
-    @property
-    def attachments(self):
+    def get_attachments(self):
         """
-        [Description]: A list of Trello Attachments available on this card.
+        [Description]:
+            Get Trello Attachments that belong to this card.
+
+        [Params]:
+            None
+
+        [Returns]:
+            A list of <Trellogy.Attachment>
         """
         path = '/cards/{CARD_ID}/attachments'.format(CARD_ID=self._id)
         response = self.req('GET', path)

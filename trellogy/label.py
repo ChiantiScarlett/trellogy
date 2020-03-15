@@ -54,6 +54,10 @@ class Label(Component):
             color      | <str> | New color of the label 
             -------------------------------------------------------------------
 
+        [Note]:
+            parameter `color` should be one of the followings: yellow, purple,
+            blue, red, green, orange, black, sky, pink, lime, null.
+
         [Returns]:
             None
         """
