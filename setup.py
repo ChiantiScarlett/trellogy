@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name='trellogy',
-    version='1.0.1',
+    version='2.0.1',
     author="Chianti Scarlett",
     author_email="chianti.scarlett@gmail.com",
     description="Trello board managing tool via Trello REST API",

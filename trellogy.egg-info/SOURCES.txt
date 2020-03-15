@@ -1,10 +1,14 @@
 README.md
 setup.py
 trellogy/__init__.py
-trellogy/api.py
-trellogy/components.py
+trellogy/attachment.py
+trellogy/board.py
+trellogy/card.py
+trellogy/component.py
 trellogy/error.py
-trellogy/trellogy.py
+trellogy/label.py
+trellogy/list.py
+trellogy/trash_bin.py
 trellogy.egg-info/PKG-INFO
 trellogy.egg-info/SOURCES.txt
 trellogy.egg-info/dependency_links.txt
